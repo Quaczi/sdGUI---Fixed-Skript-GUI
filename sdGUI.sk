@@ -1,0 +1,28 @@
+function sdSlot(player: player, slot: integer, inv: text, item: item, name: text, lore: text, commands: text):
+	if inventory name of {_player}'s current inventory is "%{_inv}%":
+		if {_name} is not "" or " ":
+			set slot {_slot} of {_player}'s current inventory to {_item} named "%colored {_name}%" with lore "%colored {_lore}%"
+		else:
+			set slot {_slot} of {_player}'s current inventory to {_item} with lore "%colored {_lore}%"
+		set {_cml::*} to {_commands} split at "||"
+		clear {sdGuiSlot%{_slot}%Of%{_inv}%For%{_player}%Comms::*}
+		loop {_cml::*}:
+			add loop-value to {sdGuiSlot%{_slot}%Of%{_inv}%For%{_player}%Comms::*}
+			
+function sdOpen(player: player, rows: integer, name: text):
+	open chest with {_rows} rows named "%colored {_name}%" to {_player}
+	wait a tick
+	loop {sdGuiChests::*}:
+		if "%loop-value%" is "%{_name}%":
+			stop
+	add {_name} to {sdGuiChests::*}
+		
+on inventory click:
+	loop {sdGuiChests::*}:
+		if "%colored loop-value%" is "%colored inventory name of player's current inventory%":
+			if slot clicked slot of player's current inventory is not air:
+				cancel event
+				loop {sdGuiSlot%clicked slot%Of%inventory name of player's current inventory%For%player%Comms::*}:
+          if "%loop-value-2%" is not "" or " ":
+					  execute player command "%loop-value-2%"
+				stop
