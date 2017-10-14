@@ -23,6 +23,5 @@ on inventory click:
 			if slot clicked slot of player's current inventory is not air:
 				cancel event
 				loop {sdGuiSlot%clicked slot%Of%inventory name of player's current inventory%For%player%Comms::*}:
-          if "%loop-value-2%" is not "" or " ":
-					  execute player command "%loop-value-2%"
+					execute player command "%loop-value-2%"
 				stop
